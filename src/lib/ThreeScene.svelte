@@ -6,7 +6,7 @@
     let container: HTMLDivElement | null = null;
     
     const setupFloor = (scene: THREE.Scene) => {
-        const floorGeometry = new THREE.PlaneGeometry(8, 10);
+        const floorGeometry = new THREE.PlaneGeometry(9, 10);
         const floorMaterial = new THREE.MeshStandardMaterial({ color: 0xe6dccc });
         const floor = new THREE.Mesh(floorGeometry, floorMaterial);
         floor.rotation.x = -Math.PI / 2; // make it lie flat
@@ -23,7 +23,7 @@
         
         // back wall (z = -5)
         const wallBack = new THREE.Mesh(
-            new THREE.BoxGeometry(8, wallHeight, wallThickness),
+            new THREE.BoxGeometry(9, wallHeight, wallThickness),
             wallMaterial
         );
         wallBack.position.set(0, wallHeight / 2, -5);
@@ -31,27 +31,59 @@
         
         // front wall (z = 5)
         const wallFront = new THREE.Mesh(
-            new THREE.BoxGeometry(8, wallHeight, wallThickness),
+            new THREE.BoxGeometry(9, wallHeight, wallThickness),
             wallMaterial
         );
         wallFront.position.set(0, wallHeight / 2, 5);
         scene.add(wallFront);
         
-        // left wall (x = -5)
+        // left wall (x = -4)
         const wallLeft = new THREE.Mesh(
             new THREE.BoxGeometry(wallThickness, wallHeight, 10),
             wallMaterial
         );
-        wallLeft.position.set(-4, wallHeight / 2, 0);
+        wallLeft.position.set(-4.5, wallHeight / 2, 0);
         scene.add(wallLeft);
         
-        // right wall (x = 5)
+        // right wall (x = 4)
         const wallRight = new THREE.Mesh(
             new THREE.BoxGeometry(wallThickness, wallHeight, 10),
             wallMaterial
         );
-        wallRight.position.set(4, wallHeight / 2, 0);
+        wallRight.position.set(4.5, wallHeight / 2, 0);
         scene.add(wallRight);
+
+        // bedroom left wall 
+        const wallBedroomRight = new THREE.Mesh(
+            new THREE.BoxGeometry(wallThickness, wallHeight, 5),
+            wallMaterial
+        );
+        wallBedroomRight.position.set(0.5, wallHeight / 2, -2.5);
+        scene.add(wallBedroomRight);
+
+        // bedroom back wall 
+        const wallBedroomFront = new THREE.Mesh(
+            new THREE.BoxGeometry(3, wallHeight, wallThickness),
+            wallMaterial
+        );
+        wallBedroomFront.position.set(3, wallHeight / 2, 0);
+        scene.add(wallBedroomFront);
+
+        // bathroom back wall
+        const wallBathroomBack = new THREE.Mesh(
+            new THREE.BoxGeometry(2, wallHeight, wallThickness),
+            wallMaterial
+        );
+        wallBathroomBack.position.set(3.5, wallHeight / 2, 1.5);
+        scene.add(wallBathroomBack);
+
+        // bathroom left wall
+        const wallBathroomLeft = new THREE.Mesh(
+            new THREE.BoxGeometry(wallThickness, wallHeight, 2.5),
+            wallMaterial
+        );
+        wallBathroomLeft.position.set(2.5, wallHeight / 2, 3.75);
+        scene.add(wallBathroomLeft);
 
         return { wallFront, wallBack, wallLeft, wallRight };
     }
