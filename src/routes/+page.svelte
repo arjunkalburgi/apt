@@ -1,2 +1,6 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script>
+    import ThreeScene from '$lib/ThreeScene.svelte';
+</script>
+
+<h1>APT</h1>
+<ThreeScene />
