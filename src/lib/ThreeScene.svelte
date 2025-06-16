@@ -5,6 +5,57 @@
     
     let container: HTMLDivElement | null = null;
     
+    const setupFloor = (scene: THREE.Scene) => {
+        const floorGeometry = new THREE.PlaneGeometry(8, 10);
+        const floorMaterial = new THREE.MeshStandardMaterial({ color: 0xe6dccc });
+        const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+        floor.rotation.x = -Math.PI / 2; // make it lie flat
+        floor.receiveShadow = true;
+        scene.add(floor);
+        return floor;
+    }
+    
+    const setupWalls = (scene: THREE.Scene) => {
+        const wallMaterial = new THREE.MeshStandardMaterial({ color: 0xfbf8f3 });
+        
+        const wallThickness = 0.1;
+        const wallHeight = 2.5;
+        
+        // back wall (z = -5)
+        const wallBack = new THREE.Mesh(
+            new THREE.BoxGeometry(8, wallHeight, wallThickness),
+            wallMaterial
+        );
+        wallBack.position.set(0, wallHeight / 2, -5);
+        scene.add(wallBack);
+        
+        // front wall (z = 5)
+        const wallFront = new THREE.Mesh(
+            new THREE.BoxGeometry(8, wallHeight, wallThickness),
+            wallMaterial
+        );
+        wallFront.position.set(0, wallHeight / 2, 5);
+        scene.add(wallFront);
+        
+        // left wall (x = -5)
+        const wallLeft = new THREE.Mesh(
+            new THREE.BoxGeometry(wallThickness, wallHeight, 10),
+            wallMaterial
+        );
+        wallLeft.position.set(-4, wallHeight / 2, 0);
+        scene.add(wallLeft);
+        
+        // right wall (x = 5)
+        const wallRight = new THREE.Mesh(
+            new THREE.BoxGeometry(wallThickness, wallHeight, 10),
+            wallMaterial
+        );
+        wallRight.position.set(4, wallHeight / 2, 0);
+        scene.add(wallRight);
+
+        return { wallFront, wallBack, wallLeft, wallRight };
+    }
+    
     onMount(() => {
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0xf0f0f0);
@@ -26,21 +77,22 @@
         renderer.setSize(container.clientWidth, container.clientHeight);
         container.appendChild(renderer.domElement);
         
-        const geometry = new THREE.BoxGeometry();
-        const material = new THREE.MeshStandardMaterial({ color: 0x0077ff });
-        const cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
+        const floor = setupFloor(scene);
+        setupWalls(scene);
         
         const light = new THREE.DirectionalLight(0xffffff, 1);
         light.position.set(5, 5, 5);
         scene.add(light);
+        renderer.shadowMap.enabled = true;
+        light.castShadow = true;
+        floor.receiveShadow = true;
+        const ambient = new THREE.AmbientLight(0xffffff, 0.4); // color, intensity
+        scene.add(ambient);
 
         const controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true; // smoother motion
+        controls.enableDamping = true;
         
         const animate = () => {
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
             controls.update();
             renderer.render(scene, camera);
             requestAnimationFrame(animate);
