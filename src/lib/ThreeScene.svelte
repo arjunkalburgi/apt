@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import * as THREE from 'three';
+    import { OrbitControls } from 'three/examples/jsm/Addons.js';
     
     let container: HTMLDivElement | null = null;
     
@@ -33,10 +34,14 @@
         const light = new THREE.DirectionalLight(0xffffff, 1);
         light.position.set(5, 5, 5);
         scene.add(light);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true; // smoother motion
         
         const animate = () => {
             cube.rotation.x += 0.01;
             cube.rotation.y += 0.01;
+            controls.update();
             renderer.render(scene, camera);
             requestAnimationFrame(animate);
         };
