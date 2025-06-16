@@ -1,5 +1,7 @@
 import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const dev = process.env.VITE_NODE_ENV === 'development';
 
