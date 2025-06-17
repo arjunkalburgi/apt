@@ -6,12 +6,21 @@
     let container: HTMLDivElement | null = null;
     
     const setupFloor = (scene: THREE.Scene) => {
-        const floorGeometry = new THREE.PlaneGeometry(9, 10);
+        const floorGeometry = new THREE.PlaneGeometry(7.1882, 8.8392);
         const floorMaterial = new THREE.MeshStandardMaterial({ color: 0xe6dccc });
         const floor = new THREE.Mesh(floorGeometry, floorMaterial);
         floor.rotation.x = -Math.PI / 2; // make it lie flat
         floor.receiveShadow = true;
         scene.add(floor);
+
+        const balconyGeometry = new THREE.PlaneGeometry(2.5273, 0.8382);
+        const balconyMaterial = new THREE.MeshStandardMaterial({ color: 0xe6dccc });
+        const balcony = new THREE.Mesh(balconyGeometry, balconyMaterial);
+        balcony.rotation.x = -Math.PI / 2;
+        balcony.position.z = -4.4196 - (0.8382 / 2);
+        balcony.position.x = 2.28;
+        balcony.receiveShadow = true;
+        scene.add(balcony);
         return floor;
     }
     
@@ -23,66 +32,74 @@
         
         // back wall (z = -5)
         const wallBack = new THREE.Mesh(
-            new THREE.BoxGeometry(9, wallHeight, wallThickness),
+            new THREE.BoxGeometry(4.2164, wallHeight, wallThickness),
             wallMaterial
         );
-        wallBack.position.set(0, wallHeight / 2, -5);
+        wallBack.position.set(-1.4858, wallHeight / 2, -4.4196);
         scene.add(wallBack);
         
         // front wall (z = 5)
         const wallFront = new THREE.Mesh(
-            new THREE.BoxGeometry(9, wallHeight, wallThickness),
+            new THREE.BoxGeometry(7.1882, wallHeight, wallThickness),
             wallMaterial
         );
-        wallFront.position.set(0, wallHeight / 2, 5);
+        wallFront.position.set(0, wallHeight / 2, 4.4196);
         scene.add(wallFront);
         
         // left wall (x = -4)
         const wallLeft = new THREE.Mesh(
-            new THREE.BoxGeometry(wallThickness, wallHeight, 10),
+            new THREE.BoxGeometry(wallThickness, wallHeight, 8.8392),
             wallMaterial
         );
-        wallLeft.position.set(-4.5, wallHeight / 2, 0);
+        wallLeft.position.set(-3.5941, wallHeight / 2, 0);
         scene.add(wallLeft);
         
         // right wall (x = 4)
         const wallRight = new THREE.Mesh(
-            new THREE.BoxGeometry(wallThickness, wallHeight, 10),
+            new THREE.BoxGeometry(wallThickness, wallHeight, 7.9248),
             wallMaterial
         );
-        wallRight.position.set(4.5, wallHeight / 2, 0);
+        wallRight.position.set(3.5941, wallHeight / 2, 0.4572);
         scene.add(wallRight);
 
         // bedroom left wall 
         const wallBedroomRight = new THREE.Mesh(
-            new THREE.BoxGeometry(wallThickness, wallHeight, 5),
+            new THREE.BoxGeometry(wallThickness, wallHeight, 3.048),
             wallMaterial
         );
-        wallBedroomRight.position.set(0.5, wallHeight / 2, -2.5);
+        wallBedroomRight.position.set(0.6222, wallHeight / 2, -1.9812);
         scene.add(wallBedroomRight);
 
         // bedroom back wall 
-        const wallBedroomFront = new THREE.Mesh(
-            new THREE.BoxGeometry(3, wallHeight, wallThickness),
+        const wallBedroomBack = new THREE.Mesh(
+            new THREE.BoxGeometry(2.9718, wallHeight, wallThickness),
             wallMaterial
         );
-        wallBedroomFront.position.set(3, wallHeight / 2, 0);
+        wallBedroomBack.position.set(2.1082, wallHeight / 2, -3.5052);
+        scene.add(wallBedroomBack);
+
+        // bedroom front wall 
+        const wallBedroomFront = new THREE.Mesh(
+            new THREE.BoxGeometry(1.5748, wallHeight, wallThickness),
+            wallMaterial
+        );
+        wallBedroomFront.position.set(2.8066, wallHeight / 2, 0.3556);
         scene.add(wallBedroomFront);
 
         // bathroom back wall
         const wallBathroomBack = new THREE.Mesh(
-            new THREE.BoxGeometry(2, wallHeight, wallThickness),
+            new THREE.BoxGeometry(1.5748, wallHeight, wallThickness),
             wallMaterial
         );
-        wallBathroomBack.position.set(3.5, wallHeight / 2, 1.5);
+        wallBathroomBack.position.set(2.8066, wallHeight / 2, 1.1176);
         scene.add(wallBathroomBack);
 
         // bathroom left wall
         const wallBathroomLeft = new THREE.Mesh(
-            new THREE.BoxGeometry(wallThickness, wallHeight, 2.5),
+            new THREE.BoxGeometry(wallThickness, wallHeight, 2.3876),
             wallMaterial
         );
-        wallBathroomLeft.position.set(2.5, wallHeight / 2, 3.75);
+        wallBathroomLeft.position.set(2.0192, wallHeight / 2, 3.2258);
         scene.add(wallBathroomLeft);
 
         return { wallFront, wallBack, wallLeft, wallRight };
@@ -90,7 +107,7 @@
     
     onMount(() => {
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xf0f0f0);
+        scene.background = new THREE.Color(0xf3ece0);
 
         if (!container) {
             console.error('Container is not defined');
@@ -103,7 +120,7 @@
             0.1,
             1000
         );
-        camera.position.z = 5;
+        camera.position.y = 10;
         
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
