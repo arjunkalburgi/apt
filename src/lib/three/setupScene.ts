@@ -28,7 +28,8 @@ export function setupScene(container: HTMLDivElement) {
     
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    
+    controls.enablePan = true;
+
     const resizeObserver = new ResizeObserver(() => {
         camera.aspect = container.clientWidth / container.clientHeight;
         camera.updateProjectionMatrix();
