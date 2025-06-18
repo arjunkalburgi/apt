@@ -1,5 +1,6 @@
 import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import path from 'path';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -16,6 +17,9 @@ const config = {
 		paths: {
 			base: dev ? '' : '/apt',
 		},
+		alias: {
+			$utils: path.resolve('./src/lib/three/utils')
+		}
 	}
 };
 
